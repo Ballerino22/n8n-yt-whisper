@@ -1,9 +1,8 @@
-FROM python:3.10-slim
+FROM docker.n8n.io/n8nio/n8n:latest
 
-RUN apt-get update && \
-    apt-get install -y ffmpeg curl && \
-    pip install --no-cache-dir yt-dlp
+USER root
+RUN apk add --no-cache ffmpeg python3 py3-pip curl \
+    && pip install --no-cache-dir yt-dlp openai-whisper
+RUN chown -R node:node /home/node/.n8n
 
-WORKDIR /app
-
-CMD ["sleep", "infinity"]
+USER node
